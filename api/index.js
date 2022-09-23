@@ -1,6 +1,14 @@
-import { INFO } from "../login";
 
-export const CONFING = [
+const INFO = [
+    {
+        user:{
+        id:"cpt456",
+        pass:"eap1234"
+        }
+    }
+]
+
+module.export = CONFING = [
     {
         url:"/",
         method:"get",
@@ -13,3 +21,5 @@ export const CONFING = [
         send:INFO
     }
 ]
+
+
