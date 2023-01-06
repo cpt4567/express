@@ -1,11 +1,13 @@
 const express = require("express");
-const { CONFING } = require("./api");
+const fileUpload = require('express-fileupload');
+const fs = require('fs');
 
+const cors = require = require('cors');
 const app = express();
 
 // NOTE:: Cross Browsing Issue
-const cors = require = require('cors');
 app.use(cors());
+app.use(fileUpload());
 
 const port = ( port ) => {
    if(!port){
@@ -16,16 +18,88 @@ const port = ( port ) => {
    }
 }
 
-/* NOTE :: use는 get post 가능  */
-app.use(`/`,(req,res) =>{{
-   res.send("hellow world")
+
+app.get(``,(req,res) =>{{
+   res.send("webcam rest api")
 }}
 )
 
-console.log(process.env.user);
+app.get(`/webcam`,(req,res) =>{{
 
 
-/* NOTE :: issue log */
+   res.send([{
+      test:"1"
+   }])
+
+}
+})
+
+app.post(`/webcam`,(req,res) =>{{
+
+   const { file } = req.files;
+
+   const day = new Date().toLocaleString()
+     
+   const videoType = file.mimetype.replaceAll("video/",".")
+
+   file.mv( `${__dirname}/video/webcam/${day}${videoType}`,
+      
+      (err) => {
+       if (err) {
+         return res.status(500).send(err);
+       }
+
+       else{
+        
+         fs.readFileSync(`${__dirname}/video/webcam/${day}${videoType}`)
+        
+            /* return res.status(200) */
+       }
+
+     }
+      );
+   
+   
+}}
+)
+
+
+app.get(`/display`,(req,res) =>{{
+   res.send([{
+      test:"1"
+   }])
+}})
+
+app.post(`/display`,(req,res) =>{{
+
+   const { file } = req.files;
+
+   const day = new Date().toLocaleString()
+     
+   const videoType = file.mimetype.replaceAll("video/",".")
+
+   file.mv( `${__dirname}/video/display/${day}${videoType}`,
+      
+      (err) => {
+       if (err) {
+         return res.status(500).send(err);
+       }
+
+       else{
+        
+         fs.readFileSync(`${__dirname}/video/display/${day}${videoType}`)
+        
+            /* return res.status(200) */
+       }
+
+     }
+      );
+   
+   
+}}
+)
+
+
 app.use((req, res, next) => {
    res.status(404).send('page not find');   
 });
