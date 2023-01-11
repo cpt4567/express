@@ -27,11 +27,11 @@ app.get(``,(req,res) =>{{
 }}
 )
 
-app.get(`/webcam`,(req,res) =>{{
+app.get(`/webcam/:fileName`,(req,res) =>{{
 
-    const dir = fs.readdirSync(`${__dirname}/video/webcam` )
-    
-    const filePath = `${__dirname}/video/webcam/${dir[1]}`;
+   const { fileName } = req.params
+   
+    const filePath = `${__dirname}/video/webcam/${fileName}.mp4`;
 
      const videoSize = fs.statSync(filePath).size;
 
@@ -39,7 +39,6 @@ app.get(`/webcam`,(req,res) =>{{
      const start = 0
 
      const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-      console.log(start, end);
      // Create headers
      const contentLength = end - start + 1;
      
@@ -117,7 +116,7 @@ app.post(`/webcam`,(req,res) =>{{
        if (err) {
          return res.status(500).send(err);
        }
-
+       
        else{
         
          fs.readFileSync(`${__dirname}/video/webcam/${end}${videoType}`)
@@ -145,7 +144,7 @@ app.get("/webcam_list" , (req,res) => {
             res.send(err)
             res.status(500)
          }
-   
+         
          else{
             res.send(!data ? [] : data )
             res.status(200)
@@ -157,11 +156,11 @@ app.get("/webcam_list" , (req,res) => {
 })
 
 
-app.get(`/display`,(req,res) =>{{
+app.get(`/display/:fileName`,(req,res) =>{{
    
-   const dir = fs.readdirSync(`${__dirname}/video/display` )
-    
-   const filePath = `${__dirname}/video/display/${dir[1]}`;
+   const { fileName } = req.params
+
+   const filePath = `${__dirname}/video/display/${fileName}.mp4`;
 
     const videoSize = fs.statSync(filePath).size;
 
